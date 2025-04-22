@@ -1,24 +1,34 @@
-const heartCount = 50;
-const body = document.body;
+import streamlit as st
+import streamlit.components.v1 as components
 
-for (let i = 0; i < heartCount; i++) {
-    let heart = document.createElement("div");
-    heart.innerHTML = "❤️";
-    heart.style.position = "fixed";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.top = "-2vh";
-    heart.style.fontSize = (Math.random() * 20 + 20) + "px";
-    heart.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
-    body.appendChild(heart);
-}
+st.set_page_config(page_title="¿Me perdonas?", layout="centered")
 
-let style = document.createElement("style");
-style.innerHTML = `
-@keyframes fall {
-    to {
-        transform: translateY(100vh);
-        opacity: 0;
-    }
-}
-`;
-document.head.appendChild(style);
+st.title("¿Me perdonas? 😢")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    si = st.button("💖 Sí")
+
+with col2:
+    no = st.button("💔 No")
+
+if si:
+    st.success("¡Sabía que me perdonarías! 💕")
+    with open("assets/corazones.js") as f:
+        js_code = f.read()
+    components.html(
+        f"""
+        <html>
+        <body>
+        <script>
+        {js_code}
+        </script>
+        </body>
+        </html>
+        """,
+        height=600
+    )
+elif no:
+    st.info("Ok... espero tu perdón algún día 😔")
+
