@@ -1,17 +1,33 @@
 import streamlit as st
+import streamlit.components.v1 as components
 
-st.set_page_config(page_title="Vuelve conmigo 💔", page_icon="💖")
+st.set_page_config(page_title="¿Me perdonas?", layout="centered")
 
-st.title("💔 Quiero que vuelvas conmigo 💔")
+st.title("¿Me perdonas? 😢")
 
-st.write("Cada vez que presiones el botón, es una disculpa desde el fondo de mi corazón...")
+col1, col2 = st.columns(2)
 
-if "contador" not in st.session_state:
-    st.session_state.contador = 0
+with col1:
+    si = st.button("💖 Sí")
 
-if st.button("💖 Disculpa mi amor 💖"):
-    st.session_state.contador += 1
+with col2:
+    no = st.button("💔 No")
 
-for _ in range(st.session_state.contador):
-    st.markdown("<h1 style='text-align: center; color: red;'>❤️</h1>", unsafe_allow_html=True)
-    st.markdown("<h3 style='text-align: center;'>Disculpa mi amor</h3>", unsafe_allow_html=True)
+if si:
+    st.success("¡Sabía que me perdonarías! 💕")
+    with open("assets/corazones.js") as f:
+        js_code = f.read()
+    components.html(
+        f"""
+        <html>
+        <body>
+        <script>
+        {js_code}
+        </script>
+        </body>
+        </html>
+        """,
+        height=600
+    )
+elif no:
+    st.info("Ok... espero tu perdón algún día 😔")
