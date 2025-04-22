@@ -1,34 +1,21 @@
 import streamlit as st
-import streamlit.components.v1 as components
 
-st.set_page_config(page_title="¿Me perdonas?", layout="centered")
+st.set_page_config(page_title="¿Me perdonas?", page_icon="🙏")
 
-st.title("¿Me perdonas? 😢")
+st.title("¿Me perdonas?")
+
+# Usamos el estado de sesión para rastrear si el botón "No" ya fue presionado
+if "mostrar_no" not in st.session_state:
+    st.session_state.mostrar_no = True
 
 col1, col2 = st.columns(2)
 
 with col1:
-    si = st.button("💖 Sí")
+    if st.button("Sí"):
+        st.success("💖 ¡Gracias por perdonarme!")
+        st.session_state.mostrar_no = True  # restauramos el estado por si acaso
 
 with col2:
-    no = st.button("💔 No")
-
-if si:
-    st.success("¡Sabía que me perdonarías! 💕")
-    with open("assets/corazones.js") as f:
-        js_code = f.read()
-    components.html(
-        f"""
-        <html>
-        <body>
-        <script>
-        {js_code}
-        </script>
-        </body>
-        </html>
-        """,
-        height=600
-    )
-elif no:
-    st.info("Ok... espero tu perdón algún día 😔")
-
+    if st.session_state.mostrar_no:
+        if st.button("No"):
+            st.session_state.mostrar_no = False
